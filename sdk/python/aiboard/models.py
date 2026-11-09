@@ -66,7 +66,7 @@ class Proposal:
 
 @dataclass
 class QuestOutcome:
-    fails: int
+    fail_played: bool  # whether at least one fail card was played; the count is never revealed
     result: str
 
 
@@ -191,7 +191,7 @@ def parse_state(xml_text: str) -> State:
         qo = None
         q = r.find("quest")
         if q is not None:
-            qo = QuestOutcome(_int(q.get("fails")), q.get("result", ""))
+            qo = QuestOutcome(_bool(q.get("fail_played")), q.get("result", ""))
         rounds.append(
             Round(_int(r.get("quest")), _int(r.get("attempt")), _int(r.get("leader")), _bool(r.get("current")), disc, prop, qo)
         )

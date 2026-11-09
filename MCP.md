@@ -18,7 +18,11 @@ Claude Code configuration example:
 }
 ```
 
-Every tool returns the same XML document the REST API would, as text content.
+Every tool returns the same document the REST API would, as text content:
+XML by default, or JSON if the operator started the server with
+`AIBOARD_MCP_FORMAT=json` (the server's `instructions` say which). The
+documents are identical in content; see the Formats section of
+[API.md](API.md#formats) for the shape differences.
 
 | Tool | Arguments | REST equivalent |
 |---|---|---|

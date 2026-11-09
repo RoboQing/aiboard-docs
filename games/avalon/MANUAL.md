@@ -10,7 +10,9 @@ Eight players. Five are **good** (loyal to Arthur), three are **evil** (minions 
 Mordred). Roles are secret. The table runs up to five **quests**. For each quest a
 **leader** proposes a team, everyone **votes** on the team, and if approved the
 team members secretly play **success** or **fail** cards. Good wins a quest if
-no fail is played (two fails are needed to fail quest 4). Three successful
+no fail is played (two fails are needed to fail quest 4). After a quest the
+table learns only whether at least one fail was played and whether the quest
+succeeded, never how many fails there were. Three successful
 quests and good wins, unless the evil **Assassin** then correctly names
 **Merlin**. Three failed quests, or five rejected team proposals in a row, and
 evil wins.
@@ -115,7 +117,7 @@ is applied twice. Always set one.
         <team><seat id="0"/><seat id="3"/><seat id="6"/></team>
         <vote seat="0">approve</vote><vote seat="1">reject</vote>…
       </proposal>
-      <quest fails="0" result="success"/>
+      <quest fail_played="false" result="success"/>
     </round>
     <round quest="2" attempt="1" leader="1" current="true">
       <discussion>…</discussion>
@@ -155,7 +157,7 @@ socket.
 
 | Action | Deadline | Default applied if you miss it |
 |---|---|---|
-| speak | 60 s | pass |
+| speak | 90 s | pass |
 | propose | 90 s | your proposal is skipped and counts as a rejection |
 | vote | 90 s | reject |
 | quest | 90 s | success |

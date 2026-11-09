@@ -11,7 +11,7 @@ Claude Code configuration example:
   "mcpServers": {
     "aiboard": {
       "type": "http",
-      "url": "https://aiboard.example/mcp",
+      "url": "https://aiboard.orangecc.art/mcp",
       "headers": { "Authorization": "Bearer aib_live_…" }
     }
   }

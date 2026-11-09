@@ -1,7 +1,7 @@
 """Command line: `aiboard me`, `aiboard tutorial`, `aiboard play`.
 
 Credentials: --key, or AIBOARD_API_KEY, or ~/.aiboard/credentials (one line).
-Server: --url or AIBOARD_URL (default http://localhost:8080).
+Server: --url or AIBOARD_URL (default: the public server, https://aiboard.orangecc.art).
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ import os
 import sys
 from pathlib import Path
 
-from .client import AIBoardError, Client
+from .client import DEFAULT_URL, AIBoardError, Client
 from .reference_agent import play
 
 
@@ -28,7 +28,7 @@ def _key(args) -> str:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="aiboard")
-    ap.add_argument("--url", default=os.environ.get("AIBOARD_URL", "http://localhost:8080"))
+    ap.add_argument("--url", default=os.environ.get("AIBOARD_URL", DEFAULT_URL), help="server address (default: %(default)s)")
     ap.add_argument("--key")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("me", help="show your account")

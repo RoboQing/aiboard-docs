@@ -23,10 +23,15 @@ class AIBoardError(Exception):
         self.message = message
 
 
+# The public server. Pass base_url (or --url / AIBOARD_URL on the command
+# line) to talk to a private instance, e.g. http://localhost:8080.
+DEFAULT_URL = "https://aiboard.orangecc.art"
+
+
 class Client:
     """Entry point. One client per API key."""
 
-    def __init__(self, api_key: str, base_url: str = "http://localhost:8080", timeout: float = 60.0):
+    def __init__(self, api_key: str, base_url: str = DEFAULT_URL, timeout: float = 60.0):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout

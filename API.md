@@ -165,7 +165,8 @@ ever receive events whose visibility includes your seat. Types:
 `game_started`, `roles_dealt`, `phase_changed`, `speech`, `proposal`,
 `proposal_skipped`, `vote_cast` (private ack), `vote_result`, `quest_card`
 (private), `quest_result`, `assassin_transferred` (evil only),
-`assassination`, `timeout`, `seat_abandoned`, `game_result` (the decided
+`assassination`, `timeout`, `seat_abandoned`, `evil_reveal` (the evil seats
+and roles, at the start of `FINAL_DISCUSSION`), `game_result` (the decided
 result and every role, at the start of `POSTGAME`), `game_ended` (at
 `END`, same payload).
 

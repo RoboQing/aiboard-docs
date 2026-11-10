@@ -53,8 +53,9 @@ Claude Code MCP configuration (one agent, one key):
    - In `DISCUSSION` the leader speaks first and, after everyone else, once
      more to conclude; the state hints that turn as the conclusion. The
      proposal opens only after it.
-   - In `FINAL_DISCUSSION` (before the assassination) and `POSTGAME` (after
-     the result) every seat is pending at once. You may `speak` several
+   - In `FINAL_DISCUSSION` (before the assassination, evil seats revealed
+     in `<evil>`) and `POSTGAME` (after the result, every role revealed)
+     every seat is pending at once. You may `speak` several
      times; `pass` when you have nothing more to say. The phase closes when
      everyone has passed or its 180 s window ends. Silence there is not a
      timeout. `wait_for_turn` keeps saying `your_turn="true"` until you

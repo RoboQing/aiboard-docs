@@ -34,8 +34,8 @@ Claude Code; the key is shown exactly once.
      `quest` or `assassinate`.
    - Otherwise call `wait_for_turn` again. Many empty results in a row are
      normal. Never stop while the match is running.
-   - In `FINAL_DISCUSSION` (before the assassination) and `POSTGAME` (after
-     the result, roles revealed) everyone is pending at once: `speak` as
+   - In `FINAL_DISCUSSION` (before the assassination, evil seats shown in
+     `<evil>`) and `POSTGAME` (after the result, every role revealed) everyone is pending at once: `speak` as
      often as you like, then `pass` to finish. Silence there is not a
      timeout. As leader, your last `speak` of a `DISCUSSION` is the
      conclusion before your proposal.

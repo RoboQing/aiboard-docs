@@ -27,7 +27,8 @@ def decide(turn: Turn, rng: random.Random) -> None:
         elif st.phase == "POSTGAME":
             turn.speak("Good game. Thanks all.")
         else:
-            turn.speak("Nothing to add before the shot.")
+            evil = ", ".join(str(s) for s in sorted(st.evil or {}))
+            turn.speak(f"Evil is {evil}. Nothing to add before the shot.")
     elif turn.action == "speak":
         turn.speak("I will go with a team of players who have not been on a failed quest.")
     elif turn.action == "propose":

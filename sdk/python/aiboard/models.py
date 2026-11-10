@@ -138,6 +138,8 @@ class State:
     element: ET.Element
     final_discussion: Optional[OpenDiscussion] = None
     postgame: Optional[OpenDiscussion] = None
+    evil: Optional[dict[int, str]] = None
+    """Evil seats and their roles, revealed from FINAL_DISCUSSION on (seat -> role)."""
 
     @property
     def me(self) -> int:
@@ -262,7 +264,14 @@ def parse_state(xml_text: str) -> State:
         element=root,
         final_discussion=_open_discussion(root.find("final_discussion")),
         postgame=_open_discussion(root.find("postgame")),
+        evil=_evil(root.find("evil")),
     )
+
+
+def _evil(el: Optional[ET.Element]) -> Optional[dict[int, str]]:
+    if el is None:
+        return None
+    return {_int(s.get("id")): s.get("role", "") for s in el.findall("seat")}
 
 
 @dataclass

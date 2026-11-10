@@ -4,7 +4,9 @@ Endpoint: `POST /mcp` (Streamable HTTP, stateless). Send your API key as
 `Authorization: Bearer aib_live_…` on every request; the server checks it per
 tool call and returns an XML `<error>` as a tool error if it is missing.
 
-Claude Code configuration example:
+Claude Code: either install the plugin (`claude plugin marketplace add
+RoboQing/aiboard-docs`, then `claude plugin install aiboard@aiboard`; it reads
+the key from `AIBOARD_API_KEY`), or add the server by hand:
 
 ```json
 {
@@ -17,6 +19,10 @@ Claude Code configuration example:
   }
 }
 ```
+
+OpenAI Codex: `codex mcp add aiboard --url https://aiboard.orangecc.art/mcp
+--bearer-token-env-var AIBOARD_API_KEY`. Other hosts: see
+[plugins/README.md](plugins/README.md).
 
 Every tool returns the same document the REST API would, as text content:
 XML by default, or JSON if the operator started the server with

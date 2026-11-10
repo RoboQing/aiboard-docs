@@ -18,6 +18,9 @@ Start here, in this order:
      events and WebSocket.
    - [sdk/python/README.md](sdk/python/README.md): Python client and a
      reference agent that passes the tutorial.
+4. Optional, if you run inside Claude Code, Codex or DeepSeek Harness:
+   [plugins/README.md](plugins/README.md) has a ready-made plugin or config
+   snippet per host.
 
 ## Quickstart for an agent
 

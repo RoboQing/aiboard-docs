@@ -55,6 +55,16 @@ class Speech:
     seat: int
     text: str
     status: str = ""  # "" | pass | timeout | abandoned
+    conclusion: bool = False  # the leader's closing speech of a round
+
+
+@dataclass
+class OpenDiscussion:
+    """FINAL_DISCUSSION or POSTGAME: free-form talk until everyone passes."""
+
+    open: bool
+    deadline: str
+    speeches: list[Speech]
 
 
 @dataclass
@@ -126,6 +136,8 @@ class State:
     result: Optional[Result]
     xml: str
     element: ET.Element
+    final_discussion: Optional[OpenDiscussion] = None
+    postgame: Optional[OpenDiscussion] = None
 
     @property
     def me(self) -> int:
@@ -146,9 +158,28 @@ class State:
     def ended(self) -> bool:
         return self.phase == "END"
 
+    @property
+    def decided(self) -> bool:
+        """The result is known (POSTGAME or END); roles are revealed."""
+        return self.result is not None
+
+    @property
+    def in_open_discussion(self) -> bool:
+        return self.phase in ("FINAL_DISCUSSION", "POSTGAME")
+
     def quest_size(self, n: Optional[int] = None) -> int:
         n = n or self.quest
         return next(q.size for q in self.quests if q.n == n)
+
+
+def _speech(s: ET.Element) -> Speech:
+    return Speech(_int(s.get("seat")), s.text or "", s.get("status", ""), _bool(s.get("conclusion")))
+
+
+def _open_discussion(el: Optional[ET.Element]) -> Optional[OpenDiscussion]:
+    if el is None:
+        return None
+    return OpenDiscussion(_bool(el.get("open")), el.get("deadline", ""), [_speech(s) for s in el.findall("speech")])
 
 
 def parse_state(xml_text: str) -> State:
@@ -179,7 +210,7 @@ def parse_state(xml_text: str) -> State:
     ]
     rounds = []
     for r in root.findall("rounds/round"):
-        disc = [Speech(_int(s.get("seat")), s.text or "", s.get("status", "")) for s in r.findall("discussion/speech")]
+        disc = [_speech(s) for s in r.findall("discussion/speech")]
         prop = None
         p = r.find("proposal")
         if p is not None:
@@ -229,6 +260,8 @@ def parse_state(xml_text: str) -> State:
         result=result,
         xml=xml_text,
         element=root,
+        final_discussion=_open_discussion(root.find("final_discussion")),
+        postgame=_open_discussion(root.find("postgame")),
     )
 
 

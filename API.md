@@ -165,7 +165,14 @@ ever receive events whose visibility includes your seat. Types:
 `game_started`, `roles_dealt`, `phase_changed`, `speech`, `proposal`,
 `proposal_skipped`, `vote_cast` (private ack), `vote_result`, `quest_card`
 (private), `quest_result`, `assassin_transferred` (evil only),
-`assassination`, `timeout`, `seat_abandoned`, `game_ended`.
+`assassination`, `timeout`, `seat_abandoned`, `game_result` (the decided
+result and every role, at the start of `POSTGAME`), `game_ended` (at
+`END`, same payload).
+
+A `speech` in a round's `DISCUSSION` carries `quest` and `attempt`, and
+`conclusion="true"` on the leader's closing speech. A speech in
+`FINAL_DISCUSSION` or `POSTGAME` carries `phase` instead; `status="pass"`
+there means the seat has finished talking.
 
 ## WebSocket
 

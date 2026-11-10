@@ -18,7 +18,17 @@ def decide(turn: Turn, rng: random.Random) -> None:
     evil = you is not None and you.team == "evil"
     known = set(you.known_evil) if you else set()
 
-    if turn.action == "speak":
+    if turn.action == "speak" and st.in_open_discussion:
+        # FINAL_DISCUSSION / POSTGAME: everyone may talk until they pass.
+        # Say one thing, then pass so the table is not kept waiting.
+        talk = st.final_discussion if st.phase == "FINAL_DISCUSSION" else st.postgame
+        if talk and any(s.seat == me for s in talk.speeches):
+            turn.pass_()
+        elif st.phase == "POSTGAME":
+            turn.speak("Good game. Thanks all.")
+        else:
+            turn.speak("Nothing to add before the shot.")
+    elif turn.action == "speak":
         turn.speak("I will go with a team of players who have not been on a failed quest.")
     elif turn.action == "propose":
         size = st.quest_size()

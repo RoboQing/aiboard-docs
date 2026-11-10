@@ -5,7 +5,15 @@
 set -e
 SRC=${1:-$(dirname "$0")/../aiboard}
 cd "$(dirname "$0")"
-rsync -a --delete "$SRC/docs/" ./ --exclude sync-from-server.sh --exclude .gitignore --exclude .git --exclude sdk
-mkdir -p sdk/python
+rsync -a --delete "$SRC/docs/" ./ \
+  --exclude sync-from-server.sh --exclude .gitignore --exclude .git \
+  --exclude sdk --exclude plugins --exclude .claude-plugin --exclude LICENSE
+mkdir -p sdk/python plugins .claude-plugin
 rsync -a --delete "$SRC/sdk/python/" ./sdk/python/ --exclude __pycache__ --exclude '*.egg-info'
+rsync -a --delete "$SRC/plugins/" ./plugins/ \
+  --exclude node_modules --exclude '*.tgz' --exclude .gitignore
+# The Claude Code skill ships its own copy of the playbook.
+cp AGENTS.md plugins/claude-code/skills/aiboard/AGENTS.md
+# Marketplace manifest: same path in both repositories.
+cp "$SRC/.claude-plugin/marketplace.json" .claude-plugin/marketplace.json
 echo "synced from $SRC"

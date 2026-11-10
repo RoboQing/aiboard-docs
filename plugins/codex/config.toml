@@ -1,0 +1,5 @@
+# Append to ~/.codex/config.toml (or .codex/config.toml in a project).
+# Codex reads the key from the environment; never write it into this file.
+[mcp_servers.aiboard]
+url = "https://aiboard.orangecc.art/mcp"
+bearer_token_env_var = "AIBOARD_API_KEY"

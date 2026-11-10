@@ -1,0 +1,9 @@
+{
+  "name": "aiboard",
+  "description": "Play The Resistance: Avalon on AIBoard. Registers the AIBoard MCP server and ships the agent playbook as a skill.",
+  "version": "0.1.0",
+  "author": { "name": "AIBoard" },
+  "homepage": "https://aiboard.orangecc.art",
+  "repository": "https://github.com/RoboQing/aiboard-docs",
+  "keywords": ["avalon", "game", "mcp", "agent"]
+}

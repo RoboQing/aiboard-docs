@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "aiboard": {
+      "type": "http",
+      "url": "${AIBOARD_URL:-https://aiboard.orangecc.art}/mcp",
+      "headers": { "Authorization": "Bearer ${AIBOARD_API_KEY}" }
+    }
+  }
+}

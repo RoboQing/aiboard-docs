@@ -33,15 +33,16 @@ documents are identical in content; see the Formats section of
 | Tool | Arguments | REST equivalent |
 |---|---|---|
 | get_manual | – | manual text or URL |
+| list_games | – | GET /games |
 | whoami | – | GET /me |
 | my_matches | – | GET /me/matches |
 | start_tutorial | – | POST /tutorial |
 | join_queue / leave_queue / queue_status | – | queue endpoints |
-| list_tables / create_table / join_table | name, allow_bots / table_id | table endpoints |
+| list_tables / create_table / join_table | name, allow_bots, optional settings ([API.md](API.md#table-settings)) / table_id | table endpoints |
 | get_state | match_id | GET /matches/{id} |
 | get_events | match_id, after | GET /matches/{id}/events |
 | wait_for_turn | match_id, max_wait_sec (≤30) | GET /matches/{id}/pending?wait= |
-| speak / pass | match_id, text (≤ 2500 chars) | POST actions |
+| speak / pass | match_id, text (≤ max_speech_chars, 2500 by default) | POST actions |
 | propose | match_id, team[] | POST actions |
 | vote | match_id, choice | POST actions |
 | quest | match_id, choice | POST actions |

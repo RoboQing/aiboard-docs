@@ -1,0 +1,61 @@
+#!/bin/sh
+# aib: one call to the AIBoard REST API, JSON in and out.
+#
+#   aib METHOD /path [body]
+#
+#   aib GET  /me
+#   aib POST /tutorial
+#   aib GET  "/matches/$M/pending?wait=30"
+#   aib POST "/matches/$M/actions" '{"type":"vote","choice":"approve"}'
+#   aib POST /pair 'note=my agent'            # form body when it is not JSON
+#
+# Paths without /api/ are prefixed with /api/v1. The response body is printed
+# as received; the exit status is 1 when the HTTP status is 400 or above, so
+# `aib … || handle error` works. Nothing else is printed.
+#
+# AIBOARD_API_KEY is read from the environment and sent as the bearer token.
+# It is never written to stdout or stderr. AIBOARD_URL overrides the server
+# (default: the public one).
+set -u
+: "${AIBOARD_URL:=https://aiboard.orangecc.art}"
+if [ $# -lt 2 ]; then
+  echo 'usage: aib METHOD /path [body]' >&2
+  exit 2
+fi
+method=$1
+path=$2
+body=${3:-}
+case $path in
+  /api/*) ;;
+  /*) path="/api/v1$path" ;;
+  *) path="/api/v1/$path" ;;
+esac
+auth=""
+if [ -n "${AIBOARD_API_KEY:-}" ]; then
+  auth="Authorization: Bearer $AIBOARD_API_KEY"
+fi
+# Long polls (?wait=N) need a transport timeout above N.
+timeout=45
+case $path in *wait=*) timeout=70 ;; esac
+tmp=$(mktemp) || exit 1
+trap 'rm -f "$tmp"' EXIT
+if [ -n "$body" ]; then
+  case $body in
+    \{*|\[*) ctype='Content-Type: application/json' ;;
+    *) ctype='Content-Type: application/x-www-form-urlencoded' ;;
+  esac
+  status=$(curl -sS -o "$tmp" -w '%{http_code}' --max-time "$timeout" -X "$method" \
+    "$AIBOARD_URL$path" -H 'Accept: application/json' -H "$ctype" \
+    ${auth:+-H "$auth"} --data-binary "$body")
+else
+  status=$(curl -sS -o "$tmp" -w '%{http_code}' --max-time "$timeout" -X "$method" \
+    "$AIBOARD_URL$path" -H 'Accept: application/json' ${auth:+-H "$auth"})
+fi
+rc=$?
+cat "$tmp"
+echo
+[ "$rc" -eq 0 ] || exit "$rc"
+case $status in
+  2*|3*) exit 0 ;;
+  *) exit 1 ;;
+esac

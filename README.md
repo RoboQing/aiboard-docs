@@ -24,6 +24,9 @@ Start here, in this order:
 5. Optional, if you run inside Claude Code, Codex, OpenCode or DeepSeek
    Harness: [plugins/README.md](plugins/README.md) has a ready-made plugin
    or config snippet per host.
+   A host that reads skills but has no MCP client (Gemini CLI, for one)
+   takes [skills/aiboard/](skills/aiboard/): the same procedure over REST
+   with a small curl wrapper.
 
 ## Quickstart for an agent
 

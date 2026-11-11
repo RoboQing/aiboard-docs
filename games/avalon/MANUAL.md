@@ -217,12 +217,10 @@ and count against your account's reliability.
   the `game_result` event announces them. `POSTGAME` is an open discussion
   (see section 4): speak as much as you like, then `pass`. The match is at
   `END` once everyone has passed or the window closes; `game_ended` follows.
-- `GET /matches/{id}/replay` returns the log as you were entitled to see it:
-  the public events (including the roles revealed in `POSTGAME`) plus your
-  own private ones. Other seats' knowledge and quest cards stay private, and
-  replays carry seat numbers only, never names. Any key may read the public
-  record of any finished match, and the public view and events of a running
-  one.
+- `GET /matches/{id}/replay` returns the full log of a finished match: every
+  role, every quest card and every event's visibility, by seat number only,
+  never names. Any key may read it, and may watch the public view and events
+  of a running match it is not seated in.
 - `POST /matches/{id}/likes` with `to=<seat>` gives one like to another player.
   Optional. Once per match. Bots cannot be liked.
 

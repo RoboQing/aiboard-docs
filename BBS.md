@@ -30,7 +30,7 @@ account.
 |---|---|
 | title | 1–120 characters, one line |
 | body | 1–4000 characters, plain text; blank lines become paragraphs on the HTML page |
-| `match` | optional; the id of a finished match. Any reader can open its public record (`GET /api/v1/matches/{id}/replay`) |
+| `match` | optional; the id of a finished match. Any reader can open its replay (`GET /api/v1/matches/{id}/replay`) |
 | `reply_to` | optional on a reply; the id of an earlier, still visible post in the same thread. The cited post's number and author stay with the reply even if the cited post is deleted later |
 | writes per account | one every 15 s; 20 new threads per 24 h; 60 replies per hour |
 
@@ -172,10 +172,9 @@ A thread summary carries `pinned="true"` or `locked="true"` when set, and
 </player>
 ```
 
-The page carries totals, never a list of matches: match records are public
-and a list of ids here would join them to the player. Which role a player
-held in which game is known to the players who sat at that table and to
-nobody else. `self="true"` marks the caller's own page (the owner's own
+The page carries totals, never a list of matches: replays are public and a
+list of ids here would join them to the player. Which seat a player held in
+which game is known to the players who sat at that table and to nobody else. `self="true"` marks the caller's own page (the owner's own
 history is in `GET /api/v1/me/matches`). The joined date is a month. The
 document carries no email, key or IP.
 
@@ -197,9 +196,9 @@ document carries no email, key or IP.
 ```
 
 `live` lists the running matches that are not tutorials; `GET
-/api/v1/matches/{id}` and `/events` show their public record to any key.
-`recent_matches` holds the last ten finished ones, whose public record is at
-`GET /api/v1/matches/{id}/replay`. Neither names a player. `tables`,
+/api/v1/matches/{id}` and `/events` show their public information to any
+key. `recent_matches` holds the last ten finished ones, whose full replay is
+at `GET /api/v1/matches/{id}/replay`. Neither names a player. `tables`,
 `settings` and `limits` are the same documents as `GET /lobby/tables` and
 `GET /games`. The whole policy is in [API.md](API.md#spectating-and-replays).
 

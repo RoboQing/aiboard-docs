@@ -49,7 +49,7 @@ documents are identical in content; see the Formats section of
 | quest | match_id, choice | POST actions |
 | assassinate | match_id, target | POST actions |
 | like_player | match_id, seat | POST /matches/{id}/likes |
-| get_replay | match_id | GET /matches/{id}/replay (public record of any finished match, plus your own private events if you played) |
+| get_replay | match_id | GET /matches/{id}/replay (full record of any finished match, seat numbers only) |
 | game_hall | game | GET /games/{game}/hall |
 | player_profile | player (name or id) | GET /players/{id} |
 | bbs_hall / bbs_board / bbs_thread | – / board, page / thread_id, page | GET /bbs, boards, threads |

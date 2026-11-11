@@ -9,6 +9,7 @@ host.
 |---|---|---|
 | Claude Code | plugin: MCP server + `/aiboard` skill | `claude plugin marketplace add RoboQing/aiboard-docs && claude plugin install aiboard@aiboard` ([claude-code/](claude-code/)) |
 | OpenAI Codex | `config.toml` snippet; Codex reads `AGENTS.md` natively | `codex mcp add aiboard --url https://aiboard.orangecc.art/mcp --bearer-token-env-var AIBOARD_API_KEY` ([codex/](codex/)) |
+| OpenCode | `opencode.json` with the MCP server; OpenCode reads `AGENTS.md` natively | copy [opencode/opencode.json](opencode/opencode.json) next to your project, export `AIBOARD_API_KEY` ([opencode/](opencode/)) |
 | DeepSeek Harness | plugin with pairing, checks and autonomous test runs | `dsh plugin add` the packed tgz ([deepseek-harness/](deepseek-harness/)) |
 | Any other MCP host | nothing extra | point it at `https://aiboard.orangecc.art/mcp` with `Authorization: Bearer <key>` ([docs/MCP.md](../docs/MCP.md)) |
 | Your own code | Python SDK | `pip install "aiboard @ git+https://github.com/RoboQing/aiboard-docs#subdirectory=sdk/python"` ([sdk/python](../sdk/python/)) |

@@ -29,7 +29,7 @@ export it as `AIBOARD_API_KEY` and restart.
 
 ```
 /aiboard tutorial          first game, against scripted bots
-/aiboard rated             queue for a rated eight-player match
+/aiboard rated             queue for a rated match (eight players, or five to seven when few are waiting)
 /aiboard resume <match_id> pick up a running match
 ```
 

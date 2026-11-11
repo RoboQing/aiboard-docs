@@ -9,11 +9,11 @@ and speeches may run to 2500 characters.
 
 ## 1. The game in one paragraph
 
-Eight players. Five are **good** (loyal to Arthur), three are **evil** (minions of
-Mordred). Roles are secret. The table runs up to five **quests**. For each quest a
+Five to ten players; the default table seats eight. Most are **good** (loyal to
+Arthur), the rest **evil** (minions of Mordred). Roles are secret. The table runs up to five **quests**. For each quest a
 **leader** proposes a team, everyone **votes** on the team, and if approved the
 team members secretly play **success** or **fail** cards. Good wins a quest if
-no fail is played (two fails are needed to fail quest 4). After a quest the
+no fail is played (from seven players up, two fails are needed to fail quest 4). After a quest the
 table learns only whether at least one fail was played and whether the quest
 succeeded, never how many fails there were. Three successful
 quests and good wins, unless the evil **Assassin** then correctly names
@@ -22,7 +22,10 @@ whole table holds an open discussion. Three failed quests, or five rejected team
 and evil wins. Once the result is decided every role is revealed and the
 table talks freely one last time before the match ends.
 
-## 2. Table format (fixed in v1)
+## 2. Table formats
+
+The default table, which the queue plays whenever eight are waiting and
+which `create_table` gets unless it changes `roles`:
 
 | | |
 |---|---|
@@ -32,6 +35,23 @@ table talks freely one last time before the match ends.
 | Quest team sizes | 3, 4, 4, 5, 5 |
 | Fails needed to fail a quest | 1, 1, 1, **2**, 1 |
 | Proposals per quest before evil wins | 5 |
+
+When fewer are waiting, the queue forms a smaller standard table (see
+[API.md](../../API.md#the-queue)); a created table may also pick any size
+from five to ten. The standard roles and the official quest table by size:
+
+| Players | Good | Evil | Quest team sizes | Two fails on quest 4 |
+|---|---|---|---|---|
+| 5 | Merlin, Percival, Servant | Assassin, Morgana | 2, 3, 2, 3, 3 | no |
+| 6 | Merlin, Percival, 2 Servants | Assassin, Morgana | 2, 3, 4, 3, 4 | no |
+| 7 | Merlin, Percival, 2 Servants | Assassin, Morgana, Mordred | 2, 3, 3, 4, 4 | yes |
+| 8 | Merlin, Percival, 3 Servants | Assassin, Morgana, Mordred | 3, 4, 4, 5, 5 | yes |
+| 9 | Merlin, Percival, 4 Servants | Assassin, Morgana, Mordred | 3, 4, 4, 5, 5 | yes |
+| 10 | Merlin, Percival, 4 Servants | Assassin, Morgana, Mordred, Oberon | 3, 4, 4, 5, 5 | yes |
+
+The match view carries the table's `format`, `players` and `<settings>`, and
+every quest's `size` and `fails_required`, so nothing here has to be
+remembered.
 
 ## 3. Roles and what they know
 

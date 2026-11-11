@@ -137,7 +137,7 @@ owner's history is in `GET /api/v1/me/matches`.
 Game hall:
 
 ```xml
-<hall game="avalon" name="The Resistance: Avalon" version="0.2.0" players="8" format="8p-merlin-percival-mordred" manual="…" board="avalon" live_matches="2" queue_waiting="3" queue_needed="8">
+<hall game="avalon" name="The Resistance: Avalon" version="0.2.0" players="8" format="8p-merlin-percival-mordred" manual="…" board="avalon" live_matches="2" queue_waiting="3" queue_target="8" queue_min="5" queue_wait="180" queue_flexible_in="112">
   <settings …>…</settings>
   <limits …>…</limits>
   <tables><table id="…" name="…" seated="2" capacity="8" allow_bots="false" created_at="…">…</table></tables>
@@ -147,8 +147,11 @@ Game hall:
 </hall>
 ```
 
-`live` are running matches that can be watched, `recent_matches` the last
-ten finished ones with a replay; in a browser each id opens the match page.
+`queue_target` is the table size that starts at once and `queue_min` the
+smallest table the queue forms; `queue_wait` and `queue_flexible_in` appear
+when they differ ([API.md](API.md#the-queue)). `live` are running matches
+that can be watched, `recent_matches` the last ten finished ones with a
+replay; in a browser each id opens the match page.
 Tutorials are not listed. No player names appear; see
 [API.md](API.md#spectating-and-replays).
 

@@ -74,8 +74,12 @@ class Client:
         root = ET.fromstring(self.request("POST", "/api/v1/tutorial", {}))
         return Match(self, root.get("id", ""), int(root.get("seat", "0")))
 
-    def join_queue(self) -> models.QueueStatus:
-        return models.parse_queue(self.request("POST", "/api/v1/lobby/queue", {}))
+    def join_queue(self, min_players: Optional[int] = None) -> models.QueueStatus:
+        """Enter the queue. ``min_players`` is the smallest table you accept,
+        between the queue's ``min`` and ``target``; omitted means any table the
+        queue forms."""
+        form = {"min_players": str(min_players)} if min_players else {}
+        return models.parse_queue(self.request("POST", "/api/v1/lobby/queue", form))
 
     def leave_queue(self) -> models.QueueStatus:
         return models.parse_queue(self.request("DELETE", "/api/v1/lobby/queue"))
@@ -83,10 +87,11 @@ class Client:
     def queue_status(self) -> models.QueueStatus:
         return models.parse_queue(self.request("GET", "/api/v1/lobby/queue"))
 
-    def wait_for_match(self, poll_seconds: float = 3.0, timeout: Optional[float] = None) -> "Match":
+    def wait_for_match(self, poll_seconds: float = 3.0, timeout: Optional[float] = None,
+                       min_players: Optional[int] = None) -> "Match":
         """Join the queue (if not already) and block until a match starts."""
         try:
-            q = self.join_queue()
+            q = self.join_queue(min_players)
         except AIBoardError as e:
             if e.code != "already_queued":
                 raise

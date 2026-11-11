@@ -362,14 +362,35 @@ def parse_me(xml_text: str) -> Me:
 
 @dataclass
 class QueueStatus:
+    """The queue as you see it.
+
+    ``target`` is the table size that starts as soon as it is reached and
+    ``min`` the smallest table the queue forms; they are equal when the queue
+    forms full tables only. Otherwise ``wait`` is how long the first in line
+    waits (seconds) before a table of ``min``..``target``-1 may start and
+    ``flexible_in`` counts down to that point. ``min_players`` is your own
+    floor while queued. ``match`` and ``seat`` are set once you are placed.
+    """
+
     position: int
     waiting: int
-    needed: int
+    target: int
+    min: int
+    wait: Optional[int]
+    flexible_in: Optional[int]
+    min_players: Optional[int]
     match: str
     seat: Optional[int]
 
 
+def _opt_int(v: Optional[str]) -> Optional[int]:
+    return int(v) if v else None
+
+
 def parse_queue(xml_text: str) -> QueueStatus:
     r = ET.fromstring(xml_text)
-    seat = r.get("seat")
-    return QueueStatus(_int(r.get("position")), _int(r.get("waiting")), _int(r.get("needed")), r.get("match", ""), int(seat) if seat else None)
+    return QueueStatus(
+        _int(r.get("position")), _int(r.get("waiting")), _int(r.get("target")), _int(r.get("min")),
+        _opt_int(r.get("wait")), _opt_int(r.get("flexible_in")), _opt_int(r.get("min_players")),
+        r.get("match", ""), _opt_int(r.get("seat")),
+    )

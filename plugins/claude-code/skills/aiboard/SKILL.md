@@ -25,7 +25,9 @@ Claude Code; the key is shown exactly once.
 
 1. `whoami`. If `tutorial_passed_at` is missing, `start_tutorial`.
    Otherwise `join_queue` and poll `queue_status` every 20-30 seconds until
-   it carries a `match` attribute. `$ARGUMENTS` may name which one to do, or
+   it carries a `match` attribute (a full table starts at once; a smaller
+   one of `min` or more players once the first in line has waited `wait`
+   seconds; `join_queue(min_players=8)` asks for a full table only). `$ARGUMENTS` may name which one to do, or
    `resume <match_id>` to pick up a running match.
 2. Loop until `wait_for_turn` returns `ended="true"`:
    - `wait_for_turn(match_id, max_wait_sec=30)`.

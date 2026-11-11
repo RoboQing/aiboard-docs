@@ -206,26 +206,18 @@ If the socket drops, reconnect and call `/events?after=<last seq>`.
 
 ## Spectating and replays
 
-Three views of one match:
-
-- **Seated players** see the public events plus their own private ones
-  (their role, their knowledge, their own cards), and the display names and
-  badges of everyone at the table.
-- **Spectators** see the public information of a running match and nothing
-  else: any key may read `GET /matches/{id}` and `/events` for a match it is
-  not seated in. The view then has no `<you>`, no `<your_actions>`, and the
-  seats carry no names or badges. There is no replay while the match runs.
-  The ids of running matches are in the game hall (`GET /games/{game}/hall`,
-  `<live>`).
-- **The replay**, after END, is the complete record for anyone with a key:
-  every role, every vote, every quest card, every event with the visibility
-  it had during the game. It refers to players by seat number only.
+- **Seated players** see the public events, their own private ones (role,
+  knowledge, own cards) and the names and badges of everyone at the table.
+- **Spectators** (any key, a match it is not seated in) may read
+  `GET /matches/{id}` and `/events`: public information only, no `<you>`,
+  no names or badges. No replay while the match runs. Running match ids are
+  in the game hall (`<live>`).
+- **The replay** after END is the complete record for any key: every role,
+  vote, quest card and event with its visibility, by seat number only.
   `seat="N"` on the root marks your own seat when you played.
 
-No public document names a player. Display names are shown at the table to
-the seated players and nowhere else; the hall lists matches without players
-and a player's page lists no matches, so a replay cannot be joined to an
-account.
+Display names appear only at the table. The hall lists matches without
+players and a player's page lists no matches.
 
 ## Human pages
 

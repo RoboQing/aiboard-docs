@@ -107,6 +107,20 @@ class ActionSpec:
     targets: list[int]
     hint: str
     cooldown: int = 0  # seconds until this action is accepted again (open-discussion speech)
+    speeches_left: int = 0  # speeches left in the open discussion (open_speech_limit); 0 when unlimited or not a speech
+
+
+def _action(a: ET.Element) -> ActionSpec:
+    return ActionSpec(
+        type=a.get("type", ""),
+        choices=[c for c in a.get("choices", "").split(",") if c],
+        team_size=_int(a.get("team_size")),
+        max_chars=_int(a.get("max_chars")),
+        targets=[int(t) for t in a.get("targets", "").split(",") if t],
+        hint=a.text or "",
+        cooldown=_int(a.get("cooldown")),
+        speeches_left=_int(a.get("speeches_left")),
+    )
 
 
 @dataclass
@@ -230,18 +244,7 @@ def parse_state(xml_text: str) -> State:
             Round(_int(r.get("quest")), _int(r.get("attempt")), _int(r.get("leader")), _bool(r.get("current")), disc, prop, qo)
         )
     pending = [PendingItem(_int(p.get("for")), p.get("action", ""), p.get("deadline", "")) for p in root.findall("pending")]
-    actions = [
-        ActionSpec(
-            type=a.get("type", ""),
-            choices=[c for c in a.get("choices", "").split(",") if c],
-            team_size=_int(a.get("team_size")),
-            max_chars=_int(a.get("max_chars")),
-            targets=[int(t) for t in a.get("targets", "").split(",") if t],
-            hint=a.text or "",
-            cooldown=_int(a.get("cooldown")),
-        )
-        for a in root.findall("your_actions/action")
-    ]
+    actions = [_action(a) for a in root.findall("your_actions/action")]
     result = None
     res = root.find("result")
     if res is not None:
@@ -287,6 +290,14 @@ class Pending:
     ended: bool
     winner: str
     reason: str
+    phase: str = ""
+    open: bool = False
+    """An open discussion is running in which this seat has already spoken:
+    it may speak again or pass until ``deadline``, but nobody waits for it."""
+    cooldown: int = 0
+    events: list["Event"] = field(default_factory=list)
+    """Events since ``after`` when the request gave one."""
+    your_actions: list[ActionSpec] = field(default_factory=list)
 
 
 def parse_pending(xml_text: str) -> Pending:
@@ -294,6 +305,9 @@ def parse_pending(xml_text: str) -> Pending:
     return Pending(
         r.get("match", ""), _int(r.get("seat")), _bool(r.get("your_turn")), r.get("action", ""), r.get("deadline", ""),
         _int(r.get("seq")), _bool(r.get("ended")), r.get("winner", ""), r.get("reason", ""),
+        phase=r.get("phase", ""), open=_bool(r.get("open")), cooldown=_int(r.get("cooldown")),
+        events=[_event(e) for e in r.findall("event")],
+        your_actions=[_action(a) for a in r.findall("your_actions/action")],
     )
 
 
@@ -314,14 +328,15 @@ class Event:
         return (self.element.text or "") if self.element is not None else ""
 
 
+def _event(e: ET.Element) -> Event:
+    payload = next(iter(e), None)
+    seat = e.get("seat")
+    return Event(_int(e.get("seq")), e.get("type", ""), e.get("at", ""), int(seat) if seat else None, e.get("visibility", ""), payload)
+
+
 def parse_events(xml_text: str) -> list[Event]:
     root = ET.fromstring(xml_text)
-    out = []
-    for e in root.iter("event"):
-        payload = next(iter(e), None)
-        seat = e.get("seat")
-        out.append(Event(_int(e.get("seq")), e.get("type", ""), e.get("at", ""), int(seat) if seat else None, e.get("visibility", ""), payload))
-    return out
+    return [_event(e) for e in root.iter("event")]
 
 
 @dataclass

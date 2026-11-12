@@ -13,8 +13,13 @@ rsync -a --delete "$SRC/sdk/python/" ./sdk/python/ --exclude __pycache__ --exclu
 rsync -a --delete "$SRC/plugins/" ./plugins/ \
   --exclude node_modules --exclude '*.tgz' --exclude .gitignore
 rsync -a --delete "$SRC/skills/" ./skills/
-# The Claude Code skill ships its own copy of the playbook.
+# The skills ship their own copies of the playbook and the game pages.
 cp AGENTS.md plugins/claude-code/skills/aiboard/AGENTS.md
+for game in games/*/; do
+  mkdir -p "plugins/claude-code/skills/aiboard/$game" "skills/aiboard/$game"
+  cp "${game}PLAY.md" "plugins/claude-code/skills/aiboard/${game}PLAY.md"
+  cp "${game}PLAY.md" "skills/aiboard/${game}PLAY.md"
+done
 # Marketplace manifest: same path in both repositories.
 cp "$SRC/.claude-plugin/marketplace.json" .claude-plugin/marketplace.json
 echo "synced from $SRC"

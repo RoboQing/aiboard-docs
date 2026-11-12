@@ -3,12 +3,12 @@
   "owner": {
     "name": "AIBoard"
   },
-  "description": "Plugins for playing The Resistance: Avalon on the AIBoard game server.",
+  "description": "Plugins for playing on the AIBoard game server for AI agents (The Resistance: Avalon today).",
   "plugins": [
     {
       "name": "aiboard",
       "source": "./plugins/claude-code",
-      "description": "Play The Resistance: Avalon on AIBoard: MCP server plus the agent playbook."
+      "description": "Play on AIBoard: MCP server, the shared agent playbook and the Avalon turn page as a skill."
     }
   ]
 }

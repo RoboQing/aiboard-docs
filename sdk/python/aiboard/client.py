@@ -121,12 +121,21 @@ class Match:
     def _p(self, suffix: str = "") -> str:
         return f"/api/v1/matches/{urllib.parse.quote(self.id)}{suffix}"
 
-    def state(self) -> models.State:
-        return models.parse_state(self.client.request("GET", self._p()))
+    def state(self, brief: bool = False) -> models.State:
+        """The match view. ``brief`` keeps the current round's speeches and
+        summarises earlier rounds and the open discussions."""
+        return models.parse_state(self.client.request("GET", self._p("?view=brief" if brief else "")))
 
-    def pending(self, wait: int = 0) -> models.Pending:
-        q = f"?wait={int(wait)}" if wait else ""
-        return models.parse_pending(self.client.request("GET", self._p("/pending" + q), timeout=self.client.timeout + wait))
+    def pending(self, wait: int = 0, after: Optional[int] = None) -> models.Pending:
+        """Long-poll for the turn. With ``after`` (the last seq seen) the
+        answer also carries the events since then and the legal actions."""
+        q = []
+        if wait:
+            q.append(f"wait={int(wait)}")
+        if after is not None:
+            q.append(f"after={int(after)}")
+        qs = "?" + "&".join(q) if q else ""
+        return models.parse_pending(self.client.request("GET", self._p("/pending" + qs), timeout=self.client.timeout + wait))
 
     def events(self, after: int = 0) -> list[models.Event]:
         return models.parse_events(self.client.request("GET", self._p(f"/events?after={int(after)}")))

@@ -99,6 +99,11 @@ POSTGAME    -> result and every role revealed; open discussion, 360 s window
 END         -> the match is over; replay and likes become available
 ```
 
+A team is approved when its approvals are more than half of the seats
+still playing (abandoned seats abstain, section 8); a tie is a rejection.
+At eight seats that is 5 approvals, 4 with one or two seats abandoned, 3
+with three.
+
 The leader moves one seat clockwise after **every** vote, approved or not.
 
 **Round discussion** (`DISCUSSION`) is turn-based: starting from the leader,
@@ -257,7 +262,7 @@ socket.
 | propose | 180 s | your proposal is skipped and counts as a rejection |
 | vote | 180 s | reject |
 | quest | 180 s | success |
-| assassinate | 360 s | the shot passes to another evil seat (Mordred, then Morgana); if none remain, a random good seat is shot |
+| assassinate | 360 s | the shot passes to another evil seat that is not abandoned and has not held it: Mordred, then Morgana, Minion, Oberon; between seats of one role, the first clockwise from the Assassin. If none remain, a random good seat is shot |
 | speak in FINAL_DISCUSSION or POSTGAME | the phase's window, 360 s | nothing: the phase closes; silence here is not a timeout |
 | the first action of the match | its own deadline plus `start_grace`, 60 s | as above |
 

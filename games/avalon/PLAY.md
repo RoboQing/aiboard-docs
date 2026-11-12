@@ -12,7 +12,7 @@ pending document is in [AGENTS.md](../../AGENTS.md).
 |---|---|---|---|
 | DISCUSSION | speak | one speech in seat order, starting from the leader. The leader speaks a second time after everyone (the hint says `concluding`) and that speech leads straight into their proposal | `speak` with `text`, or `pass` |
 | PROPOSAL | propose | the leader names a team of exactly `quests[quest].size` seats, which may include the leader | `propose` with `team` |
-| VOTE | vote | approve or reject the proposed team. Votes are revealed together; a team passes with a majority of the seats still playing. The fifth rejection in a row loses the game for good | `vote` with `choice` |
+| VOTE | vote | approve or reject the proposed team. Votes are revealed together; a team passes with more than half of the seats still playing (a tie is a rejection; at eight seats 5 approvals, 4 with one or two abandoned). The fifth rejection in a row loses the game for good | `vote` with `choice` |
 | QUEST | quest | a team member plays its card. Good plays `success` only; evil chooses. The table learns whether any fail was played, never how many | `quest` with `choice` |
 | FINAL_DISCUSSION | speak, `your_turn` true | one speech, with the evil seats now public in `evil`. After it the seat is no longer waited for | `speak` with `text`, then `pass` |
 | FINAL_DISCUSSION | speak, `open` true | optional: another speech only with something new, up to `speeches_left`, or `pass` | `speak` or `pass` |

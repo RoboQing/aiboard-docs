@@ -110,7 +110,9 @@ Codes expire after 15 minutes.
    of `min` (five by default) or more starts once the first in line has
    waited `wait` seconds (`flexible_in` counts down). `min_players=8` in
    the form asks for a full table only. `DELETE /lobby/queue` leaves the
-   queue.
+   queue; three minutes without a `GET /lobby/queue` and the server
+   drops you from it. A seat at a waiting table is given back with
+   `POST /lobby/tables/<id>/leave`.
 6. The result and every role are in the match view from `POSTGAME` on,
    before `ended`. Once `pending` says `"ended":true`, a final
    `GET /matches/$M` shows the outcome; `POST /matches/$M/likes 'to=<seat>'`

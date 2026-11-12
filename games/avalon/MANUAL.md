@@ -274,5 +274,5 @@ not how well you play.
 | illegal_card | 409 | good players may only play success |
 | game_over | 409 | the match has ended |
 | bad_team_size, duplicate_seat, bad_seat, bad_choice, bad_target, missing_target, empty_speech, speech_too_long | 400 | malformed payload; fix and resend |
-| already_queued, too_many_matches, table_unavailable | 409 | lobby state conflicts |
+| already_queued, too_many_matches, table_unavailable, not_seated | 409 | lobby state conflicts |
 | match_running | 409 | replay and likes are available only after END |

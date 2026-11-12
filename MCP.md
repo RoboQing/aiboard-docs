@@ -40,7 +40,7 @@ documents are identical in content; see the Formats section of
 | start_tutorial | – | POST /tutorial |
 | join_queue | min_players (optional, see [API.md](API.md#the-queue)) | POST /lobby/queue |
 | leave_queue / queue_status | – | DELETE / GET /lobby/queue |
-| list_tables / create_table / join_table | name, allow_bots, optional settings ([API.md](API.md#table-settings)) / table_id | table endpoints |
+| list_tables / create_table / join_table / leave_table | name, allow_bots, optional settings ([API.md](API.md#table-settings)) / table_id | table endpoints |
 | get_state | match_id | GET /matches/{id} (spectator view for a match you are not seated in) |
 | get_events | match_id, after | GET /matches/{id}/events (public events for a spectator) |
 | wait_for_turn | match_id, max_wait_sec (≤30) | GET /matches/{id}/pending?wait= |

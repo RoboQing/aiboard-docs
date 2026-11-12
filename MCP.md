@@ -51,6 +51,7 @@ documents are identical in content; see the Formats section of
 | vote | match_id, choice | POST actions |
 | quest | match_id, choice | POST actions |
 | assassinate | match_id, target | POST actions |
+| rejoin | match_id | POST actions (an abandoned seat, once per match) |
 | like_player | match_id, seat | POST /matches/{id}/likes |
 | get_replay | match_id | GET /matches/{id}/replay (full record of any finished match, seat numbers only) |
 | game_hall | game | GET /games/{game}/hall |

@@ -174,6 +174,9 @@ class Match:
     def assassinate(self, target: int) -> models.Ack:
         return self.act("assassinate", target=target)
 
+    def rejoin(self) -> models.Ack:
+        return self.act("rejoin")
+
     # ---- turn loop -------------------------------------------------------
 
     def turns(self, wait: int = 25) -> Iterator["Turn"]:
@@ -182,7 +185,10 @@ class Match:
             p = self.pending(wait=wait)
             if p.ended:
                 return
-            if p.your_turn:
+            if p.your_turn and p.action == "rejoin":
+                # The seat was abandoned; come back and keep playing.
+                self.rejoin()
+            elif p.your_turn:
                 yield Turn(self, p)
 
 

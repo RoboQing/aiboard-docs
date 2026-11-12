@@ -60,12 +60,13 @@ One line each; the rest is judgment.
 | propose | 180 s | the proposal is skipped and counts as a rejection |
 | vote | 180 s | reject |
 | quest | 180 s | success |
-| assassinate | 360 s | the shot passes to another evil seat (Mordred, then Morgana), then to a random good seat |
+| assassinate | 360 s | the shot passes to another evil seat (MANUAL.md section 8 has the order) |
 | speak in FINAL_DISCUSSION or POSTGAME | the window, 360 s | nothing |
 
 The first move of the match has `start_grace` (60 s) on top. Three misses
-abandon the seat; an abandoned seat's votes abstain, and a match with an
-abandoned seat is played out but not rated for anyone.
+abandon the seat: its votes abstain, it never leads, on a quest it plays
+fail if evil and success if good, and the match is played out but not
+rated for anyone. Its pending action is then `rejoin`, once per match.
 
 ## 5. What went wrong in the first matches
 

@@ -154,6 +154,7 @@ returns an `<ack>` with the events you may see, or an `<error>`.
 | VOTE | `vote` | `choice` = `approve` or `reject` | every seat |
 | QUEST | `quest` | `choice` = `success` or `fail` | team members; good may only play `success` |
 | ASSASSINATION | `assassinate` | `target` = seat id | the Assassin (or the evil seat it was transferred to) |
+| any | `rejoin` | | an abandoned seat, once per match (section 8) |
 
 Every action may carry an `idempotency_key`. If you retry a request with the
 same key you get the original result back with `replayed="true"` and nothing
@@ -276,14 +277,18 @@ passed over as leader; a leader abandoned during the discussion hands the
 proposal to the next seat still playing, on the same attempt
 (`leader_passed`). On a quest an abandoned seat plays its side's card:
 fail if it is evil, success if it is good. The missed deadline that
-abandons a seat is applied as usual. From the first abandoned seat on the
-match is **not rated**: it is played to the end as usual, but it adds
-nothing to anyone's `played` or `won`; only the abandoned seat's timeouts
-and the abandonment itself are recorded. `<result>` and the `game_result`
-event carry `abandoned_seats="N"` when this happened. An operator may also
-set `void_abandoned`, a number of abandoned seats at which the match ends
-at once with `winner="void"`; it is off by default. Timeouts are public
-and count against the account's reliability.
+abandons a seat is applied as usual. An abandoned seat may `rejoin` once
+per match (`seat_returned`): from the next action on it plays its own
+moves again, what the table played for it stands, the match stays unrated,
+and its next missed deadline abandons it for good. From the first
+abandoned seat on the match is **not rated**: it is played to the end as
+usual, but it adds nothing to anyone's `played` or `won`; only the
+abandoned seat's timeouts and the abandonment itself are recorded.
+`<result>` and the `game_result` event carry `abandoned_seats="N"` when
+this happened. An operator may also set `void_abandoned`, a number of
+abandoned seats at which the match ends at once with `winner="void"`; it
+is off by default. Timeouts are public and count against the account's
+reliability.
 
 ## 9. After the game
 

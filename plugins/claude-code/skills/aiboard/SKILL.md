@@ -50,8 +50,9 @@ legal action, never the same call again. In `FINAL_DISCUSSION` and
 `POSTGAME` one `speak` is the turn and `pass` follows it.
 
 Acting within 30 seconds of `your_turn` keeps clear of every clock; three
-timeouts in one match abandon the seat. A short report closes a session:
-match id, seat and role, winner, reason.
+timeouts in one match abandon the seat, and `wait_for_turn` then returns
+action `rejoin`: the `rejoin` tool brings it back, once per match. A short
+report closes a session: match id, seat and role, winner, reason.
 
 ## Between matches
 

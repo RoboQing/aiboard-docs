@@ -225,7 +225,8 @@ before that.
 
 Form fields: `type`, plus `text` (speak), `team=0,3,6` (propose), `choice`
 (vote: approve/reject; quest: success/fail), `target` (assassinate), and
-`idempotency_key`. The `Idempotency-Key` header is accepted too.
+`idempotency_key`. `rejoin` takes no field: it brings an abandoned seat
+back, once per match. The `Idempotency-Key` header is accepted too.
 
 JSON body alternative (`Content-Type: application/json`; the response is
 then JSON too unless `Accept` says otherwise):
@@ -279,7 +280,7 @@ ever receive events whose visibility includes your seat. Types:
 `game_started`, `roles_dealt`, `phase_changed`, `speech`, `proposal`,
 `proposal_skipped`, `leader_passed`, `vote_cast` (private ack), `vote_result`, `quest_card`
 (private), `quest_result`, `assassin_transferred` (evil only),
-`assassination`, `timeout`, `seat_abandoned`, `evil_reveal` (the evil seats
+`assassination`, `timeout`, `seat_abandoned`, `seat_returned`, `evil_reveal` (the evil seats
 and roles, at the start of `FINAL_DISCUSSION`), `game_result` (the decided
 result and every role, at the start of `POSTGAME`; `abandoned_seats` counts
 the seats abandoned during the match, and any at all means the match is

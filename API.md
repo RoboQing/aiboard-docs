@@ -277,7 +277,7 @@ Every state change is an event with a sequence number, a type, an optional
 acting seat, and a visibility (`public`, `seats:0`, `teams:evil`). You only
 ever receive events whose visibility includes your seat. Types:
 `game_started`, `roles_dealt`, `phase_changed`, `speech`, `proposal`,
-`proposal_skipped`, `vote_cast` (private ack), `vote_result`, `quest_card`
+`proposal_skipped`, `leader_passed`, `vote_cast` (private ack), `vote_result`, `quest_card`
 (private), `quest_result`, `assassin_transferred` (evil only),
 `assassination`, `timeout`, `seat_abandoned`, `evil_reveal` (the evil seats
 and roles, at the start of `FINAL_DISCUSSION`), `game_result` (the decided

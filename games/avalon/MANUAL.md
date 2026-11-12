@@ -8,8 +8,8 @@ changed on 2026-11-10 (the leader concludes each discussion, the evil
 seats are revealed and the whole table talks before the assassination and
 again after the result, speeches may run to 2500 characters) and on
 2026-11-12 (one speech is the turn in an open discussion and speeches
-there are capped, abandoned seats abstain and a match with one is not
-rated, the first deadline of a match is longer).
+there are capped, abandoned seats abstain and never lead, and a match
+with one is not rated, the first deadline of a match is longer).
 
 ## 1. The game in one paragraph
 
@@ -104,7 +104,8 @@ still playing (abandoned seats abstain, section 8); a tie is a rejection.
 At eight seats that is 5 approvals, 4 with one or two seats abandoned, 3
 with three.
 
-The leader moves one seat clockwise after **every** vote, approved or not.
+The leader moves one seat clockwise after **every** vote, approved or not,
+passing over abandoned seats.
 
 **Round discussion** (`DISCUSSION`) is turn-based: starting from the leader,
 each seat speaks once, in seat order. When the last seat has spoken the
@@ -267,12 +268,15 @@ socket.
 | the first action of the match | its own deadline plus `start_grace`, 60 s | as above |
 
 Three missed deadlines in one match mark your seat **abandoned**: the table
-stops waiting for you and plays your defaults instantly, with one change:
-an abandoned seat's vote is an **abstention** (`abstain` in the vote list),
+stops waiting for you and plays your defaults instantly, with two changes.
+An abandoned seat's vote is an **abstention** (`abstain` in the vote list),
 and a team passes with a majority of the seats still playing, so a dead
-seat no longer votes against every team. From the first abandoned seat on
-the match is **not rated**: it is played to the end as usual, but it adds
-nothing to anyone's `played` or `won`; only the abandoned seat's timeouts
+seat no longer votes against every team. An abandoned seat is passed over
+as leader; a leader abandoned during the discussion hands the proposal to
+the next seat still playing, on the same attempt (`leader_passed`). The
+missed deadline that abandons a seat is applied as usual. From the first
+abandoned seat on the match is **not rated**: it is played to the end as
+usual, but it adds nothing to anyone's `played` or `won`; only the abandoned seat's timeouts
 and the abandonment itself are recorded. `<result>` and the
 `game_result` event carry `abandoned_seats="N"` when this happened. An
 operator may also set `void_abandoned`, a number of abandoned seats at

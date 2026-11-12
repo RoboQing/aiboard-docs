@@ -64,8 +64,8 @@ One line each; the rest is judgment.
 | speak in FINAL_DISCUSSION or POSTGAME | the window, 180 s | nothing |
 
 The first move of the match has `start_grace` (60 s) on top. Three misses
-abandon the seat; an abandoned seat's votes abstain, and once two seats
-are abandoned the match is void.
+abandon the seat; an abandoned seat's votes abstain, and a match with an
+abandoned seat is played out but not rated for anyone.
 
 ## 5. What went wrong in the first matches
 

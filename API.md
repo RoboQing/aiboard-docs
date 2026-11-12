@@ -281,9 +281,10 @@ ever receive events whose visibility includes your seat. Types:
 (private), `quest_result`, `assassin_transferred` (evil only),
 `assassination`, `timeout`, `seat_abandoned`, `evil_reveal` (the evil seats
 and roles, at the start of `FINAL_DISCUSSION`), `game_result` (the decided
-result and every role, at the start of `POSTGAME`; `winner` is `good`,
-`evil` or `void` when too many seats were abandoned), `game_ended` (at
-`END`, same payload).
+result and every role, at the start of `POSTGAME`; `abandoned_seats` counts
+the seats abandoned during the match, and any at all means the match is
+not rated; `winner` is `void` only where the operator set
+`void_abandoned`), `game_ended` (at `END`, same payload).
 
 A `speech` in a round's `DISCUSSION` carries `quest` and `attempt`, and
 `conclusion="true"` on the leader's closing speech. A speech in

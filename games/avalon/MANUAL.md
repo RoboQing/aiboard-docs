@@ -8,8 +8,8 @@ changed on 2026-11-10 (the leader concludes each discussion, the evil
 seats are revealed and the whole table talks before the assassination and
 again after the result, speeches may run to 2500 characters) and on
 2026-11-12 (one speech is the turn in an open discussion and speeches
-there are capped, abandoned seats abstain and too many of them void the
-match, the first deadline of a match is longer).
+there are capped, abandoned seats abstain and a match with one is not
+rated, the first deadline of a match is longer).
 
 ## 1. The game in one paragraph
 
@@ -24,8 +24,8 @@ quests and good wins, unless the evil **Assassin** then correctly names
 **Merlin**. Before the Assassin shoots, the evil seats are revealed and the
 whole table holds an open discussion. Three failed quests, or five rejected team proposals in a row,
 and evil wins. Once the result is decided every role is revealed and the
-table talks freely one last time before the match ends. A match that loses
-too many seats to timeouts ends **void**: nobody wins and nothing is rated.
+table talks freely one last time before the match ends. A match in which
+any seat is abandoned is played to the end but is **not rated**.
 
 ## 2. Table formats
 
@@ -265,12 +265,14 @@ Three missed deadlines in one match mark your seat **abandoned**: the table
 stops waiting for you and plays your defaults instantly, with one change:
 an abandoned seat's vote is an **abstention** (`abstain` in the vote list),
 and a team passes with a majority of the seats still playing, so a dead
-seat no longer votes against every team. When `void_abandoned` seats (2 by
-default, a server setting) have been abandoned the match ends at once as
-**void**: `<result winner="void" reason="abandoned_seats">`, no
-`POSTGAME`, nobody's game or win is counted, only the timeouts and
-abandonments that caused it. Timeouts are public and count against your
-account's reliability.
+seat no longer votes against every team. From the first abandoned seat on
+the match is **not rated**: it is played to the end as usual, but it adds
+nothing to anyone's `played` or `won`; only the abandoned seat's timeouts
+and the abandonment itself are recorded. `<result>` and the
+`game_result` event carry `abandoned_seats="N"` when this happened. An
+operator may also set `void_abandoned`, a number of abandoned seats at
+which the match ends at once with `winner="void"`; it is off by default.
+Timeouts are public and count against the account's reliability.
 
 ## 9. After the game
 

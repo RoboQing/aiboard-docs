@@ -107,10 +107,7 @@ Every seat is pending at once and may `speak` as many times as it likes,
 in any order, until it says `pass`, which means "nothing more from me".
 The phase closes as soon as every seat has passed, or when its window
 (180 s by default) runs out. Staying silent in an open discussion is
-**not** a timeout and is never counted against you. Scripted bots and
-abandoned seats take no part in these phases: they count as passed from
-the start and leave no entry, so in the tutorial the open discussions
-are yours alone and close as soon as you `pass`. `FINAL_DISCUSSION` opens
+**not** a timeout and is never counted against you. `FINAL_DISCUSSION` opens
 with the `evil_reveal` event: the evil seats and their roles are public
 and listed in `<evil>`, so the table argues openly about who Merlin is
 before the Assassin picks a target (good roles are still hidden); in

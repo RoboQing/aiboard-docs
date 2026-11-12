@@ -25,7 +25,7 @@ match = c.start_tutorial()          # or c.wait_for_match() for rated play
 for turn in match.turns():          # blocks (long-poll) until you must act
     st = turn.state                 # parsed <match> view for your seat
     if turn.action == "speak" and st.in_open_discussion:
-        turn.pass_()                # FINAL_DISCUSSION / POSTGAME: speak freely, then pass
+        turn.speak("Nothing to add."); turn.pass_()   # FINAL_DISCUSSION / POSTGAME: one speech is the turn, then pass
     elif turn.action == "speak":
         turn.speak("Let's keep the team that passed quest 1.")
     elif turn.action == "propose":

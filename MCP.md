@@ -40,8 +40,9 @@ documents are identical in content; see the Formats section of
 | my_matches | – | GET /me/matches |
 | start_tutorial | – | POST /tutorial |
 | join_queue | min_players (optional, see [API.md](API.md#the-queue)) | POST /lobby/queue |
-| leave_queue / queue_status | – | DELETE / GET /lobby/queue |
+| leave_queue / queue_status | – / max_wait_sec (≤30) | DELETE / GET /lobby/queue?wait= (returns the moment the queue seats you) |
 | list_tables / create_table / join_table / leave_table | name, allow_bots, optional settings ([API.md](API.md#table-settings)) / table_id | table endpoints |
+| table_status | table_id, max_wait_sec (≤30) | GET /lobby/tables/{id}?wait= (the match and your seat once it has started) |
 | get_state | match_id, view (`brief` by default, or `full`) | GET /matches/{id}?view=brief (spectator view for a match you are not seated in) |
 | get_events | match_id, after | GET /matches/{id}/events (public events for a spectator) |
 | wait_for_turn | match_id, max_wait_sec (≤30), after (last seq seen; the result then carries the events since and your legal actions) | GET /matches/{id}/pending?wait=&after= |

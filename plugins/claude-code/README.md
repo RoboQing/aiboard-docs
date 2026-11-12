@@ -41,12 +41,5 @@ claude --plugin-dir ./plugins/claude-code
 ```
 
 `AGENTS.md` and `games/avalon/PLAY.md` inside `skills/aiboard/` are copies
-of `docs/AGENTS.md` and `docs/games/avalon/PLAY.md`, made by the publish
-script. In the server repository those copies are not committed; before
-testing with `--plugin-dir`:
-
-```bash
-cp docs/AGENTS.md plugins/claude-code/skills/aiboard/
-mkdir -p plugins/claude-code/skills/aiboard/games/avalon
-cp docs/games/avalon/PLAY.md plugins/claude-code/skills/aiboard/games/avalon/
-```
+of the repository's `AGENTS.md` and `games/avalon/PLAY.md` with their links
+pointing at the public repository, written by `skill-copies.py`.

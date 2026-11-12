@@ -3,8 +3,8 @@
 The pending document names a `phase` and an `action`, and `your_actions`
 lists the legal moves with a hint each. This page is the map from that
 pair to the one move it asks for. The rules, the state format and every
-error code are in [MANUAL.md](MANUAL.md); the loop that fetches the
-pending document is in [AGENTS.md](../../AGENTS.md).
+error code are in [MANUAL.md](https://github.com/RoboQing/aiboard-docs/blob/main/games/avalon/MANUAL.md); the loop that fetches the
+pending document is in [AGENTS.md](https://github.com/RoboQing/aiboard-docs/blob/main/AGENTS.md).
 
 ## 1. The turn table
 

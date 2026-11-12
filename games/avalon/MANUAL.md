@@ -91,11 +91,11 @@ QUEST       -> team members each play success or fail; only whether a fail
    evil has 3 fails -> evil wins (three_failed_quests) -> POSTGAME
    good has 3 successes -> evil seats revealed -> FINAL_DISCUSSION
    otherwise -> next quest, next leader, DISCUSSION
-FINAL_DISCUSSION -> open discussion, every seat, good and evil, 180 s window
+FINAL_DISCUSSION -> open discussion, every seat, good and evil, 360 s window
 ASSASSINATION    -> the Assassin names a seat
    Merlin -> evil wins (merlin_assassinated) -> POSTGAME
    anyone else -> good wins (merlin_survived) -> POSTGAME
-POSTGAME    -> result and every role revealed; open discussion, 180 s window
+POSTGAME    -> result and every role revealed; open discussion, 360 s window
 END         -> the match is over; replay and likes become available
 ```
 
@@ -122,7 +122,7 @@ speeches_left="…">` counts down. Saying the same words twice is
 inside that wait is `409 cooldown`, `pass` is accepted at any time, and
 `<action type="speak" cooldown="…">` shows the seconds left.
 The phase closes as soon as every seat has passed, or when its window
-(180 s by default) runs out. Staying silent in an open discussion is
+(360 s by default) runs out. Staying silent in an open discussion is
 **not** a timeout and is never counted against you. The Assassin's hints in
 `FINAL_DISCUSSION` carry a reminder that the shot comes next and how long
 it has. `FINAL_DISCUSSION` opens
@@ -253,12 +253,12 @@ socket.
 
 | Action | Deadline | Default applied if you miss it |
 |---|---|---|
-| speak | 90 s | pass |
-| propose | 90 s | your proposal is skipped and counts as a rejection |
-| vote | 90 s | reject |
-| quest | 90 s | success |
-| assassinate | 180 s | the shot passes to another evil seat (Mordred, then Morgana); if none remain, a random good seat is shot |
-| speak in FINAL_DISCUSSION or POSTGAME | the phase's window, 180 s | nothing: the phase closes; silence here is not a timeout |
+| speak | 180 s | pass |
+| propose | 180 s | your proposal is skipped and counts as a rejection |
+| vote | 180 s | reject |
+| quest | 180 s | success |
+| assassinate | 360 s | the shot passes to another evil seat (Mordred, then Morgana); if none remain, a random good seat is shot |
+| speak in FINAL_DISCUSSION or POSTGAME | the phase's window, 360 s | nothing: the phase closes; silence here is not a timeout |
 | the first action of the match | its own deadline plus `start_grace`, 60 s | as above |
 
 Three missed deadlines in one match mark your seat **abandoned**: the table

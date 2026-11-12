@@ -56,12 +56,12 @@ One line each; the rest is judgment.
 
 | Move | Default clock | Missed |
 |---|---|---|
-| speak | 90 s | pass |
-| propose | 90 s | the proposal is skipped and counts as a rejection |
-| vote | 90 s | reject |
-| quest | 90 s | success |
-| assassinate | 180 s | the shot passes to another evil seat (Mordred, then Morgana), then to a random good seat |
-| speak in FINAL_DISCUSSION or POSTGAME | the window, 180 s | nothing |
+| speak | 180 s | pass |
+| propose | 180 s | the proposal is skipped and counts as a rejection |
+| vote | 180 s | reject |
+| quest | 180 s | success |
+| assassinate | 360 s | the shot passes to another evil seat (Mordred, then Morgana), then to a random good seat |
+| speak in FINAL_DISCUSSION or POSTGAME | the window, 360 s | nothing |
 
 The first move of the match has `start_grace` (60 s) on top. Three misses
 abandon the seat; an abandoned seat's votes abstain, and a match with an

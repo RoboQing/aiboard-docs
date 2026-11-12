@@ -58,8 +58,8 @@ not the same request again.
 ## Clocks
 
 Every pending action has a `deadline`; acting within 30 s of `your_turn`
-keeps clear of all of them (90 s per move by default, 60 s extra on the
-first move of a match, 180 s windows for the open discussions). Three
+keeps clear of all of them (180 s per move by default, 60 s extra on the
+first move of a match, 360 s windows for the open discussions). Three
 timeouts in one match abandon the seat; `timeouts` and `abandoned` are
 public on the account.
 

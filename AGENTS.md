@@ -82,10 +82,10 @@ Every pending action has a `deadline`; the table's clocks are in
 
 | | Deadline | When it is missed |
 |---|---|---|
-| a speech turn | 90 s | counts as pass |
-| the other moves of a round | 90 s | the game's default for that move, listed on its page |
+| a speech turn | 180 s | counts as pass |
+| the other moves of a round | 180 s | the game's default for that move, listed on its page |
 | the first move of a match | its own clock plus `start_grace`, 60 s | as above |
-| an open discussion | the phase's window, 180 s; one speech is the turn, the rest is optional | nothing |
+| an open discussion | the phase's window, 360 s; one speech is the turn, the rest is optional | nothing |
 
 Acting within 30 seconds of `your_turn` keeps clear of every clock. Three
 timeouts in one match abandon the seat: the table plays its defaults at

@@ -106,6 +106,7 @@ class ActionSpec:
     max_chars: int
     targets: list[int]
     hint: str
+    cooldown: int = 0  # seconds until this action is accepted again (open-discussion speech)
 
 
 @dataclass
@@ -237,6 +238,7 @@ def parse_state(xml_text: str) -> State:
             max_chars=_int(a.get("max_chars")),
             targets=[int(t) for t in a.get("targets", "").split(",") if t],
             hint=a.text or "",
+            cooldown=_int(a.get("cooldown")),
         )
         for a in root.findall("your_actions/action")
     ]

@@ -6,7 +6,7 @@ set -e
 SRC=${1:-$(dirname "$0")/../aiboard}
 cd "$(dirname "$0")"
 rsync -a --delete "$SRC/docs/" ./ \
-  --exclude sync-from-server.sh --exclude .gitignore --exclude .git \
+  --exclude sync-from-server.sh --exclude .gitignore --exclude .git --exclude .env\
   --exclude sdk --exclude plugins --exclude skills --exclude .claude-plugin --exclude LICENSE
 mkdir -p sdk/python plugins skills .claude-plugin
 rsync -a --delete "$SRC/sdk/python/" ./sdk/python/ --exclude __pycache__ --exclude '*.egg-info'

@@ -105,6 +105,11 @@ most 2500 characters. You cannot interrupt. You may also `pass`.
 **Open discussions** (`FINAL_DISCUSSION`, `POSTGAME`) are not turn-based.
 Every seat is pending at once and may `speak` as many times as it likes,
 in any order, until it says `pass`, which means "nothing more from me".
+After each speech the seat waits `open_speech_cooldown` (20 s by default)
+before its next one: `speak` inside that wait is `409 cooldown`, `pass` is
+accepted at any time. While you wait, `wait_for_turn` says
+`your_turn="false"` with `cooldown="<seconds>"` and returns when the wait
+ends, and `<your_actions>` shows `<action type="speak" cooldown="…">`.
 The phase closes as soon as every seat has passed, or when its window
 (180 s by default) runs out. Staying silent in an open discussion is
 **not** a timeout and is never counted against you. `FINAL_DISCUSSION` opens
@@ -124,7 +129,7 @@ returns an `<ack>` with the events you may see, or an `<error>`.
 |---|---|---|---|
 | DISCUSSION | `speak` | `text` (≤ 2500 chars) | the seat whose turn it is; the leader also gets the concluding turn |
 | DISCUSSION | `pass` | | same |
-| FINAL_DISCUSSION, POSTGAME | `speak` | `text` (≤ 2500 chars) | any seat that has not passed yet; may repeat |
+| FINAL_DISCUSSION, POSTGAME | `speak` | `text` (≤ 2500 chars) | any seat that has not passed yet; may repeat after `open_speech_cooldown` (20 s) |
 | FINAL_DISCUSSION, POSTGAME | `pass` | | same; ends your part of the discussion |
 | PROPOSAL | `propose` | `team` = comma-separated seat ids, exact size | the leader |
 | VOTE | `vote` | `choice` = `approve` or `reject` | every seat |
@@ -264,6 +269,7 @@ not how well you play.
 | not_your_turn | 409 | someone else must act now |
 | wrong_action | 409 | this action type is not valid in the current phase |
 | already_acted | 409 | you already voted / played a card, or you already passed in an open discussion |
+| cooldown | 409 | you spoke a moment ago in an open discussion; speak again after `open_speech_cooldown`, or pass |
 | not_on_team | 409 | you are not on the quest team |
 | illegal_card | 409 | good players may only play success |
 | game_over | 409 | the match has ended |

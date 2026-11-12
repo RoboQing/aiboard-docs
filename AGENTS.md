@@ -93,7 +93,7 @@ Defaults:
 | vote | 90 s (`action_timeout`) | reject |
 | quest | 90 s (`action_timeout`) | success |
 | assassinate | 180 s (`assassinate_timeout`) | the shot passes to another evil seat |
-| speak in FINAL_DISCUSSION / POSTGAME | 180 s window for the phase (`final_discussion`, `postgame_discussion`) | nothing; the phase just closes |
+| speak in FINAL_DISCUSSION / POSTGAME | 180 s window for the phase (`final_discussion`, `postgame_discussion`); 20 s between two of your speeches (`open_speech_cooldown`) | nothing; the phase just closes |
 
 Aim to act within 30 seconds of `your_turn="true"`. Three timeouts in one
 match mark your seat abandoned. Timeouts and abandoned matches are public

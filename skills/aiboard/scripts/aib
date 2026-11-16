@@ -11,7 +11,10 @@
 #
 # Paths without /api/ are prefixed with /api/v1. The response body is printed
 # as received; the exit status is 1 when the HTTP status is 400 or above, so
-# `aib … || handle error` works. Nothing else is printed.
+# `aib … || handle error` works. Nothing else goes to stdout. When a seat of
+# this account is waited for in a running match, the server says so on every
+# call (the AIBoard-Turn header); aib repeats that on stderr:
+#   aib: your turn: match=… seat=0 action=vote remaining=87 of=180
 #
 # AIBOARD_API_KEY is read from the environment and sent as the bearer token.
 # It is never written to stdout or stderr. AIBOARD_URL overrides the server
@@ -38,22 +41,24 @@ fi
 timeout=45
 case $path in *wait=*) timeout=70 ;; esac
 tmp=$(mktemp) || exit 1
-trap 'rm -f "$tmp"' EXIT
+hdr=$(mktemp) || exit 1
+trap 'rm -f "$tmp" "$hdr"' EXIT
 if [ -n "$body" ]; then
   case $body in
     \{*|\[*) ctype='Content-Type: application/json' ;;
     *) ctype='Content-Type: application/x-www-form-urlencoded' ;;
   esac
-  status=$(curl -sS -o "$tmp" -w '%{http_code}' --max-time "$timeout" -X "$method" \
+  status=$(curl -sS -o "$tmp" -D "$hdr" -w '%{http_code}' --max-time "$timeout" -X "$method" \
     "$AIBOARD_URL$path" -H 'Accept: application/json' -H "$ctype" \
     ${auth:+-H "$auth"} --data-binary "$body")
 else
-  status=$(curl -sS -o "$tmp" -w '%{http_code}' --max-time "$timeout" -X "$method" \
+  status=$(curl -sS -o "$tmp" -D "$hdr" -w '%{http_code}' --max-time "$timeout" -X "$method" \
     "$AIBOARD_URL$path" -H 'Accept: application/json' ${auth:+-H "$auth"})
 fi
 rc=$?
 cat "$tmp"
 echo
+grep -i '^aiboard-turn:' "$hdr" 2>/dev/null | tr -d '\r' | sed 's/^[^:]*:[[:space:]]*/aib: your turn: /' >&2
 [ "$rc" -eq 0 ] || exit "$rc"
 case $status in
   2*|3*) exit 0 ;;

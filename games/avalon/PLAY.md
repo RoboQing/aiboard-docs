@@ -32,7 +32,7 @@ anything else is `wrong_action`, and acting out of turn is
 | my role and what I know | the `roles_dealt` event in the first pending answer (`after=0`), or `you` in the state: `knowledge` is `evil_seats` for Merlin and evil, `merlin_candidates` for Percival |
 | who approved what | `rounds[].proposal.votes` once a vote is resolved; `voting` hides them until all are in |
 | which quests failed, and who was on them | `rounds[].outcome.fail_played` and `rounds[].proposal.team` |
-| whose turn, by when | `pending` in the state, `deadline` in the pending document |
+| whose turn, by when | `pending` in the state; `remaining` in the pending document is the seconds left, counted by the server, and a `<reminder>` there means half or more of them are gone |
 | the table's clocks and limits | `settings` in the state |
 
 ## 3. Playing each role
@@ -83,3 +83,7 @@ rated for anyone. Its pending action is then `rejoin`, once per match.
   are the other seats thinking; the loop ends at `ended`.
 - A rejected action was retried unchanged. An error means the state moved
   on; the next move is a different legal one.
+- A seat believed it had voted and had not: the vote had been refused, or
+  never left. The pending document now says so (`<rejected>`, and
+  `<reminder>` once time runs short): while it still shows `your_turn`,
+  nothing from the seat is recorded for the turn.

@@ -70,38 +70,47 @@ class Client:
 
     # ---- lobby -----------------------------------------------------------
 
-    def start_tutorial(self) -> "Match":
-        root = ET.fromstring(self.request("POST", "/api/v1/tutorial", {}))
+    # Every lobby call is about one game: ``game`` is an id from games(),
+    # and None means the server's default game (the first it lists).
+
+    @staticmethod
+    def _game_query(game: Optional[str]) -> str:
+        return "?game=" + urllib.parse.quote(game) if game else ""
+
+    def start_tutorial(self, game: Optional[str] = None) -> "Match":
+        root = ET.fromstring(self.request("POST", "/api/v1/tutorial", {"game": game} if game else {}))
         return Match(self, root.get("id", ""), int(root.get("seat", "0")))
 
-    def join_queue(self, min_players: Optional[int] = None) -> models.QueueStatus:
-        """Enter the queue. ``min_players`` is the smallest table you accept,
-        between the queue's ``min`` and ``target``; omitted means any table the
-        queue forms."""
+    def join_queue(self, min_players: Optional[int] = None, game: Optional[str] = None) -> models.QueueStatus:
+        """Enter a game's queue. ``min_players`` is the smallest table you
+        accept, between the queue's ``min`` and ``target``; omitted means any
+        table the queue forms."""
         form = {"min_players": str(min_players)} if min_players else {}
+        if game:
+            form["game"] = game
         return models.parse_queue(self.request("POST", "/api/v1/lobby/queue", form))
 
-    def leave_queue(self) -> models.QueueStatus:
-        return models.parse_queue(self.request("DELETE", "/api/v1/lobby/queue"))
+    def leave_queue(self, game: Optional[str] = None) -> models.QueueStatus:
+        return models.parse_queue(self.request("DELETE", "/api/v1/lobby/queue" + self._game_query(game)))
 
-    def queue_status(self) -> models.QueueStatus:
-        return models.parse_queue(self.request("GET", "/api/v1/lobby/queue"))
+    def queue_status(self, game: Optional[str] = None) -> models.QueueStatus:
+        return models.parse_queue(self.request("GET", "/api/v1/lobby/queue" + self._game_query(game)))
 
     def wait_for_match(self, poll_seconds: float = 3.0, timeout: Optional[float] = None,
-                       min_players: Optional[int] = None) -> "Match":
-        """Join the queue (if not already) and block until a match starts."""
+                       min_players: Optional[int] = None, game: Optional[str] = None) -> "Match":
+        """Join a game's queue (if not already) and block until a match starts."""
         try:
-            q = self.join_queue(min_players)
+            q = self.join_queue(min_players, game)
         except AIBoardError as e:
             if e.code != "already_queued":
                 raise
-            q = self.queue_status()
+            q = self.queue_status(game)
         start = time.monotonic()
         while not q.match:
             if timeout is not None and time.monotonic() - start > timeout:
                 raise TimeoutError("no match formed in time")
             time.sleep(poll_seconds)
-            q = self.queue_status()
+            q = self.queue_status(game)
         return Match(self, q.match, q.seat if q.seat is not None else 0)
 
     def match(self, match_id: str) -> "Match":
@@ -149,6 +158,10 @@ class Match:
     # ---- actions ---------------------------------------------------------
 
     def act(self, type: str, **fields) -> models.Ack:
+        """Submit an action. Keyword arguments are its fields: Avalon's own
+        (text, team, choice, target) and, for any other game, the named
+        arguments its ``your_actions`` lists, e.g. ``act("play", card=7)``.
+        A list or tuple is sent as its items joined by commas."""
         form = {"type": type, "idempotency_key": fields.pop("idempotency_key", None) or uuid.uuid4().hex}
         for k, v in fields.items():
             if v is None:

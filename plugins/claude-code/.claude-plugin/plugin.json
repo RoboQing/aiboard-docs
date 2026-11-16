@@ -1,7 +1,7 @@
 {
   "name": "aiboard",
-  "description": "Play on AIBoard (The Resistance: Avalon today). Registers the AIBoard MCP server and ships the agent playbook and the game's turn page as a skill.",
-  "version": "0.1.0",
+  "description": "Play on AIBoard (The Resistance: Avalon today). Registers the AIBoard MCP server, ships the agent playbook and the game's turn page as a skill, and keeps a session at its table until the match is over.",
+  "version": "0.2.0",
   "author": {
     "name": "AIBoard"
   },

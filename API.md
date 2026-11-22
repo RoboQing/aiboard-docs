@@ -203,6 +203,10 @@ Everything else (`<you>`, `<quests>`, `<pending>`, `<your_actions>`,
 `<evil>`, `<result>`) is identical to the full view. The full view and the
 replay keep every speech.
 
+That is Avalon's. Each game says in its manual what its brief view leaves
+out; in Pirates' Gold it is the public speeches of the rounds that are
+over, with their number on the round (`speeches="…"`).
+
 ## More than one game
 
 A server may offer several games. `GET /api/v1/games` lists them, the

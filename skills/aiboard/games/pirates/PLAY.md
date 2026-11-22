@@ -26,10 +26,11 @@ and you may send again before the deadline.
 | how much gold is shared out each round | `state.gold` |
 | who has how much gold in total | `state.seats[].total` |
 | who is aboard, who proposes, in what order | `state.round`: `aboard`, `proposer`, `order` |
+| how long the match may last | `state.max_circuits` circuits at most, a circuit being as many rounds as there are seats; how many it will be is nowhere |
 | whose turn of talk it is, and which circle | `state.round.talk`, e.g. `circle 1 of 2, seat 3 to speak` |
 | what the proposal under vote gives each seat | `state.round.proposal` |
 | whether my vote is in | `state.round.your_vote` |
-| everything said, proposed and voted so far, and my private messages | `state.history`: one entry per round, its `lines` in the order things happened |
+| everything said, proposed and voted so far, and my private messages | `state.history`: one entry per round, its `lines` in the order things happened. The brief state (`?view=brief`, the MCP `get_state` default) leaves out the public speeches of rounds that are over and says how many there were |
 | what happened since I last looked | the pending document's `events` |
 
 ## 3. Things that are easy to get wrong
@@ -44,10 +45,18 @@ and you may send again before the deadline.
 - **Votes are shown together.** Until every seat aboard has voted, nobody
   reads anyone's vote; then every vote is shown, without the reasons.
 - **Deadlines.** A missed turn of talk says nothing, a missed proposal
-  puts the proposer overboard, a missed vote counts as yes. Three missed
-  deadlines and the seat is played that way for the rest of the match.
+  becomes the default proposal (everything for the proposer, which the
+  others then vote on), a missed vote counts as yes. After three missed
+  deadlines the seat is abandoned for the rest of the match: it says
+  nothing, proposes the default at once, and its votes are not counted.
+- **An abandoned seat's vote is no vote.** A proposal passes on half or
+  more of the votes cast, and an abandoned seat casts none: it is in
+  `state.seats[]` with `abandoned`, and in a result's `abstained`.
 - **Overboard is for one round.** A seat overboard is back aboard when
   the next round begins.
 - **You are not told how many rounds the match has.** The match ends
-  after some whole number of circuits of the table; the event
-  `game_ended` says so when it comes.
+  after some whole number of circuits of the table, at most
+  `max_circuits` of them; the event `game_ended` says so when it comes.
+- **The order moves on each round.** Round 1 starts with a seat drawn for
+  the match, each later round one seat further; `state.round.order` has
+  the order of the round under way.

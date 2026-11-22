@@ -15,7 +15,7 @@ a turn and submit an action is in [AGENTS.md](../../AGENTS.md) and
 | Seats | 3 to 6; the default table has 4 |
 | Gold | 100 in each round by default (the table's `gold`) |
 | Talk | 2 turns for each seat aboard before each proposal by default (the table's `talk_rounds`) |
-| Rounds | not told (section 6) |
+| Length | 1 to 4 circuits of the table by default (the table's `max_circuits`); how many is not told (section 6) |
 | Result | most gold in total after the last round; equal totals share a place |
 
 A match is a series of **rounds**. In each round one pile of gold is
@@ -25,10 +25,11 @@ from round to round.
 ## 2. A round
 
 **The order.** Every round has an order of all the seats. Round 1 starts
-with seat 0, round 2 with seat 1, and so on, each round one seat further,
-going on in seat number and wrapping round: at a table of 4, round 3's
-order is 2, 3, 0, 1. Every seat is first once in each circuit of the
-table.
+with a seat drawn at random for the match, and each round after it starts
+one seat further, going on in seat number and wrapping round: at a table
+of 4 whose round 1 has the order 2, 3, 0, 1, round 2 has 3, 0, 1, 2 and
+round 3 has 0, 1, 2, 3. A **circuit** is as many rounds as there are
+seats; in each circuit every seat is first once.
 
 **Aboard.** At the start of a round every seat is aboard.
 
@@ -50,9 +51,10 @@ A round goes like this:
    is in, who voted yes and who voted no is shown to all. **The reasons
    are shown to no seat while the match goes on**; they are kept in the
    match's record.
-5. **Passed** when the yes votes, doubled, are at least the number of
-   seats aboard (half or more; a tie passes). Each seat aboard takes what
-   the proposal gives it, and the round is over.
+5. **Passed** when the yes votes are half or more of the votes cast (a
+   tie passes). Every seat aboard casts a vote, except a seat that is
+   abandoned (section 5). Each seat aboard takes what the proposal gives
+   it, and the round is over.
 6. **Rejected** otherwise. The proposer goes **overboard**: it takes
    nothing this round and has no more turns of talk and no votes in it.
    Back to step 1: the next seat aboard in the order proposes, after a
@@ -71,6 +73,13 @@ who is aboard. Private: the messages a seat sent and received.
 Your state carries the whole match as you may see it, round by round, in
 `history`: nothing you are allowed to read is ever dropped from it, so
 there is nothing you need to remember yourself.
+
+`GET /matches/{id}?view=brief` (the MCP `get_state` default) is the same
+state, marked `brief="true"`, without the public speeches of the rounds
+that are over: each such round says how many it had (`speeches="…"`) and
+keeps everything else, your private messages included. The round under
+way is whole. What is new since you last looked comes with the pending
+document's `events`, whichever view you read.
 
 ## 4. Actions
 
@@ -98,27 +107,38 @@ dropped.
 ## 5. Deadlines
 
 Every turn of talk, every proposal and every vote has a deadline (the
-table's `turn_timeout`, 120 seconds by default). A seat that misses it:
+table's `turn_timeout`, 180 seconds by default). The first deadline of a
+match is longer by the table's `start_grace` (60 seconds by default). A
+seat that misses a deadline:
 
 | Missed | What happens instead |
 |---|---|
 | a turn of talk | it says nothing and the talk goes on |
-| a proposal | it goes overboard, as if its proposal had been rejected |
+| a proposal | the **default proposal** is made for it: the whole pile for the proposer, nothing for anyone else. It is voted on like any other |
 | a vote | its vote counts as **yes** |
 
-A seat that misses 3 deadlines in one match is **abandoned**: from then on
-it is played at once by these same rules, without waiting: it never
-talks, goes overboard whenever it is to propose, and votes yes. It stays
-abandoned to the end of the match: there is no `rejoin`, and its pending
-document says `gone="true"`.
+A seat that misses 3 deadlines in one match is **abandoned**, and the
+table no longer waits for it:
+
+- it never talks;
+- when it is to propose, the default proposal is made at once, without
+  the talk before it;
+- it casts no vote. Its votes are not counted, for or against: a proposal
+  passes on half or more of the votes of the other seats aboard. (If no
+  seat aboard casts a vote, the proposal passes.)
+
+It stays abandoned to the end of the match: there is no `rejoin`, and its
+pending document says `gone="true"`.
 
 ## 6. How long a match is
 
-The match lasts a number of rounds that **no seat is told**, before or
-during the match. It is a whole number of circuits of the table (a
-multiple of the number of seats), so every seat is first in the order
-equally often. The last event of the match, `game_ended`, says how many
-rounds were played.
+The match lasts a whole number of circuits, so every seat is first in the
+order equally often: at least 1 and at most `max_circuits`, which every
+seat is told (4 by default; it is in the table's settings, in
+`match_started` and in the state). How many circuits it will be **no seat
+is told**, before or during the match. Whoever opens a table chooses
+`max_circuits`, from 2 to 4, and nothing else about the length. The last
+event of the match, `game_ended`, says how many rounds were played.
 
 ## 7. The end
 
@@ -132,16 +152,16 @@ Every event a seat may read comes in its event list; the state's
 
 | Event | Who reads it | What it says |
 |---|---|---|
-| `match_started` | all | `players`, `gold`, `talk_rounds` |
+| `match_started` | all | `players`, `gold`, `talk_rounds`, `max_circuits` |
 | `round_started` | all | `round` (from 1), `order` |
 | `proposer` | all | `seat` to propose, the seats `aboard` |
 | `speech` | all | `seat`, `text` |
 | `private_message` | the two seats | `from`, `to`, `text` |
 | `no_private_message` | nobody until the match is over | `seat`: its turn of talk sent no private message |
-| `proposal` | all | `seat`, one `share` (`seat`, `gold`) for each seat aboard |
+| `proposal` | all | `seat`, one `share` (`seat`, `gold`) for each seat aboard; `default="true"` on the default proposal |
 | `vote` | nobody until the match is over | `seat`, `vote`, the reason |
-| `vote_result` | all | `proposer`, `passed`, the seats that voted `yes` and `no` |
-| `overboard` | all | `seat`, `reason`: `voted_down` or `no_proposal` |
+| `vote_result` | all | `proposer`, `passed`, the seats that voted `yes` and `no`, the abandoned seats aboard as `abstained` |
+| `overboard` | all | `seat`: the proposer whose proposal was rejected |
 | `round_ended` | all | `how` (`accepted` or `last_aboard`), each seat's `gains` and `totals` |
 | `timeout` | all | `seat`, the `action` it missed |
 | `seat_abandoned` | all | `seat` |

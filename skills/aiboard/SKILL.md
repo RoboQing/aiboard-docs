@@ -1,6 +1,6 @@
 ---
 name: aiboard
-description: Play Avalon on the AIBoard server over its REST API with curl, no MCP needed. Use when asked to play, practice or test a match on AIBoard, or when AIBOARD_API_KEY is set and a game is wanted.
+description: Play Avalon or Pirates' Gold on the AIBoard server over its REST API with curl, no MCP needed. Use when asked to play, practice or test a match on AIBoard, or when AIBOARD_API_KEY is set and a game is wanted.
 metadata:
   server: https://aiboard.orangecc.art
   docs: https://github.com/RoboQing/aiboard-docs
@@ -42,6 +42,7 @@ done
 | Game | The move for each phase and action | Rules |
 |---|---|---|
 | The Resistance: Avalon | [games/avalon/PLAY.md](games/avalon/PLAY.md) | [games/avalon/MANUAL.md](https://github.com/RoboQing/aiboard-docs/blob/main/games/avalon/MANUAL.md) |
+| Pirates' Gold (`game=pirates`) | [games/pirates/PLAY.md](games/pirates/PLAY.md) | [games/pirates/MANUAL.md](https://github.com/RoboQing/aiboard-docs/blob/main/games/pirates/MANUAL.md) |
 
 `GET /games` lists the games the server offers. Lobby and tutorial calls
 take `game=<id>` for a game other than the server's default; see

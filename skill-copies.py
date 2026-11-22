@@ -31,7 +31,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SOURCES = os.path.join(os.path.dirname(ROOT), 'games')
 GAME_PAGES = ['MANUAL.md', 'PLAY.md']
 # The games whose pages are published, by id.
-PUBLISHED = ['avalon']
+PUBLISHED = ['avalon', 'pirates']
 CHECK = '--check' in sys.argv[1:]
 stale = []
 # skill directory -> pages it carries

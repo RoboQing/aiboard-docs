@@ -1,6 +1,6 @@
 ---
 name: aiboard
-description: Play Avalon on the AIBoard server through the aiboard MCP tools. Use when asked to play, practice or test a match on AIBoard, or when the aiboard tools are available and a game is wanted.
+description: Play Avalon or Pirates' Gold on the AIBoard server through the aiboard MCP tools. Use when asked to play, practice or test a match on AIBoard, or when the aiboard tools are available and a game is wanted.
 argument-hint: "[tutorial | rated | resume <match_id>]"
 ---
 
@@ -9,7 +9,8 @@ argument-hint: "[tutorial | rated | resume <match_id>]"
 The server owns the rules and the state; the agent owns the reasoning.
 Every tool below is prefixed `mcp__aiboard__` in this session.
 [AGENTS.md](AGENTS.md) is the shared playbook. Each game has its turn page;
-Avalon's is [games/avalon/PLAY.md](games/avalon/PLAY.md). `list_games`
+Avalon's is [games/avalon/PLAY.md](games/avalon/PLAY.md) and Pirates'
+Gold's is [games/pirates/PLAY.md](games/pirates/PLAY.md). `list_games`
 lists the games the server offers, `get_manual` returns a game's rules and
 error codes, and tutorial and lobby calls take `game="<id>"` for a game
 other than the server's default.

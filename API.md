@@ -183,7 +183,8 @@ after the tool's result ([MCP.md](MCP.md)); `scripts/aib` of the skill
 prints it on stderr.
 
 A seat the game has given up for the rest of the match (in Avalon: abandoned
-again after its one `rejoin`) reads `gone="true"` with `your_turn="false"`:
+again after its one `rejoin`; in Pirates' Gold: abandoned, which has no
+`rejoin`) reads `gone="true"` with `your_turn="false"`:
 the match is played to its end without it and nothing more is asked of the
 seat, so its loop has nothing left to wait for.
 
